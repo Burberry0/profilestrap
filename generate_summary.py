@@ -1,27 +1,31 @@
 #!/usr/bin/env python3
-from main import scrape_organization_pages, generate_experience_summary
+import argparse
+from main import analyze_company
 
 def main():
-    print("🔍 Scraping Eight Bit Studios pages...")
-    content = scrape_organization_pages('https://eightbitstudios.com')
+    parser = argparse.ArgumentParser(description='Generate company profile summary from any website')
+    parser.add_argument('url', help='Company website URL to analyze')
+    parser.add_argument('--output', '-o', help='Output filename for summary (default: auto-generated)')
+    parser.add_argument('--pages', '-p', type=int, default=8, help='Maximum number of pages to scrape (default: 8)')
+    parser.add_argument('--no-ai', action='store_true', help='Skip AI summary generation')
+    
+    args = parser.parse_args()
+    
+    print("🔍 ProfileStrap - Company Analysis Tool")
+    print("=" * 50)
+    
+    # Analyze the company
+    summary = analyze_company(
+        url=args.url,
+        output_file=args.output,
+        max_pages=args.pages,
+        use_ai=not args.no_ai
+    )
     
     print("\n" + "="*80)
-    print("GENERATING EXPERIENCE SUMMARY...")
-    print("="*80)
-    
-    # Generate the summary
-    summary = generate_experience_summary(content)
-    
-    print("\n" + "="*80)
-    print("EXPERIENCE SUMMARY:")
+    print("COMPANY PROFILE SUMMARY:")
     print("="*80)
     print(summary)
-    
-    # Save summary to file
-    with open('eightbitstudios_experience_summary.txt', 'w') as f:
-        f.write(summary)
-    
-    print(f"\n✅ Summary saved to: eightbitstudios_experience_summary.txt")
 
 if __name__ == "__main__":
-    main() 
+    main()
