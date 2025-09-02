@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import argparse
-from main import scrape_company_pages, discover_important_pages
+from main import scrape_company_pages
 
 def main():
     parser = argparse.ArgumentParser(description='Show scraped content from any company website')
@@ -15,12 +15,8 @@ def main():
     
     print(f"🔍 Scraping {url} pages...")
     
-    # First discover pages with the specified limit
-    important_pages = discover_important_pages(url, max_pages=args.pages)
-    print(f"Discovered {len(important_pages)} pages: {important_pages}")
-    
-    # Then scrape content from those pages
-    content = scrape_company_pages(url)
+    # Scrape content with the specified page limit
+    content = scrape_company_pages(url, max_pages=args.pages)
     
     print("\n" + "="*80)
     print("CONTENT PREVIEWS:")
